@@ -7,9 +7,6 @@ It is highly recommended that you use [direnv](http://direnv.net/). A `.envrc` e
 
 The following environment variables are required to be set:
 
-TF_VAR_secret_key '
-VALID_DEPLOYMENT_ENVS="development production
-
 |Environment Variable|Description|
 |--------------------|-----------|
 |`AWS_SECRET_ACCESS_KEY`|AWS Secret Access Key|
