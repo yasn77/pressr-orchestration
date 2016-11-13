@@ -1,0 +1,32 @@
+---
+- name: Dynamically set consul member and make sure it's not set to the current host
+  set_fact:
+    consul_member: "{{ hostvars[groups[deployment_group_tag] | difference([inventory_hostname]) | intersect(groups['tag_role_consul']) | random]['ec2_private_ip_address'] }}"
+
+- name: Launch Consul Server
+  docker_service:
+    state: present
+    project_name: consul-server
+    definition:
+      consulserver:
+        image: consul
+        command: "agent -server -bind={{ ansible_default_ipv4['address'] }} -retry-join={{ consul_member }} -bootstrap-expect={{ groups['tag_role_consul'] | intersect(groups[deployment_group_tag]) | length}}"
+        restart: always
+        net: host
+        environment:
+          CONSUL_LOCAL_CONFIG: '{"skip_leave_on_interrupt": true}'
+  when: ansible_ssh_host in groups.tag_role_consul
+
+- name: Launch Consul Agent
+  docker_service:
+    state: present
+    project_name: consul-agent
+    definition:
+      consulagent:
+        image: consul
+        command: "agent -bind={{ ansible_default_ipv4['address'] }} -retry-join={{ consul_member }}"
+        restart: always
+        net: host
+        environment:
+          CONSUL_LOCAL_CONFIG: '{"leave_on_terminate": true}'
+  when: not ansible_ssh_host in groups.tag_role_consul

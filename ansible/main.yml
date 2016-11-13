@@ -1,0 +1,16 @@
+---
+- name: Run common role
+  hosts: tag_project_pressr:&tag_env_{{ deployment_environment }}
+  become: true
+  tasks:
+  roles:
+    - common
+    - docker
+    - consul
+
+- name: HAProxy Play
+  hosts: tag_role_haproxy:&tag_env_{{ deployment_environment }}
+  become: true
+  gather_facts: false
+  roles:
+    - haproxy

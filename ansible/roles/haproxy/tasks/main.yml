@@ -1,0 +1,48 @@
+---
+- name: Install haproxy
+  apt:
+    name: haproxy
+    state: installed
+
+- name: Grab consul-template
+  get_url:
+    url: https://releases.hashicorp.com/consul-template/0.16.0/consul-template_0.16.0_linux_amd64.zip
+    dest: /tmp/consul-template.zip
+    checksum: md5:4637fb989af3b10a2cc34a0fa5fd414d
+  register: consul_archive
+
+- name: Check consul-template has been unpacked
+  shell: test -x /usr/local/bin/consul-template
+  ignore_errors: yes
+  register: result
+
+- name: Unpack consul-template
+  shell: unzip -d /usr/local/bin /tmp/consul-template.zip
+  when: consul_archive|changed or result|failed
+
+- name: Add haproxy template
+  copy:
+    src: "{{ role_path }}/files/haproxy.ctmpl"
+    dest: /etc/haproxy/haproxy.ctmpl
+
+- name: Add consul-template systemd unit
+  template:
+    src: consul-template.systemd.j2
+    dest: /etc/systemd/system/consul-template.service
+  register: consul_template_systemd_config
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+  when: consul_template_systemd_config|changed
+
+- name: Enable consul-template
+  service:
+    name: consul-template
+    enabled: yes
+    state: started
+
+- name: Start haproxy
+  service:
+    name: haproxy
+    enabled: yes
+    state: started

@@ -1,0 +1,6 @@
+---
+pressr_git_repo: https://github.com/yasn77/pressr-wordpress.git
+pressr_git_ref: HEAD
+pressr_src_dir: /var/tmp/pressr
+pressr_docker_image: pressr:latest
+pressr_scale:  2

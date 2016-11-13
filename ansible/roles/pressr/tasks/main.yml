@@ -1,0 +1,47 @@
+---
+#- name: Launch registrator container
+#  docker_container:
+#    name: registrator
+#    image: gliderlabs/registrator:latest
+#    command: consul://localhost:8500
+#    volumes:
+#      - /var/run/docker.sock:/tmp/docker.sock
+#    state: started
+#    restart: yes
+#    network_mode: host
+
+- name:  Clone PressR Docker Repo
+  git:
+    repo: '{{ pressr_git_repo }}'
+    dest: '{{ pressr_src_dir }}'
+    version: '{{ pressr_git_ref }}'
+
+- name: Create Docker Service
+  docker_service:
+    state: present
+    scale:
+      pressr: '{{ pressr_scale }}'
+    project_name: pressr
+    definition:
+      registrator:
+        image: gliderlabs/registrator:latest
+        command: consul://localhost:8500
+        volumes:
+          - /var/run/docker.sock:/tmp/docker.sock
+        restart: always
+        net: host
+      pressr:
+        build: '{{ pressr_src_dir }}'
+        ports:
+          - 80
+        environment:
+          WORDPRESS_DB_PASSWORD: '{{ pressr_mysql_password }}'
+          WORDPRESS_DB_HOST: '{{ pressr_mysql_host }}'
+          WORDPRESS_DB_USER: '{{ pressr_mysql_user }}'
+          WORDPRESS_DB_NAME: '{{ pressr_mysql_db }}'
+          SERVICE_GIT_TAG: '{{ pressr_git_ref }}'
+          SERVICE_ENVIRONMENT: '{{ ec2_tag_env }}'
+        labels:
+          pressr.git-tag: '{{ pressr_git_ref }}'
+          pressr.environment: '{{ ec2_tag_env }}'
+  register: output

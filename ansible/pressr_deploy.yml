@@ -1,0 +1,7 @@
+---
+- name: PressR deployment
+  hosts: tag_role_app:&tag_env_{{ deployment_environment }}
+  become: true
+  serial: '{{ serial | default(2) }}'
+  roles:
+    - pressr

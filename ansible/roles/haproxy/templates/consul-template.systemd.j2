@@ -1,0 +1,11 @@
+[Unit]
+Description=consul-template
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Restart=on-failure
+ExecStart=/usr/local/bin/consul-template -template="/etc/haproxy/haproxy.ctmpl:/etc/haproxy/haproxy.cfg:systemctl reload haproxy" -retry 20s
+
+[Install]
+WantedBy=multi-user.target

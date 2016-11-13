@@ -1,0 +1,7 @@
+---
+- name: HAProxy Play
+  hosts: tag_role_haproxy
+  become: true
+  gather_facts: false
+  roles:
+    - haproxy

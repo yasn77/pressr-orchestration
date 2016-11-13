@@ -1,0 +1,22 @@
+global
+    daemon
+    maxconn 256
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend pressr
+    bind *:80
+    mode http
+    default_backend pressr_containers
+
+backend pressr_containers
+    mode http
+    balance roundrobin
+    option forwardfor
+    option httpchk HEAD / HTTP/1.1\r\nHost:localhost
+    option http-server-close{{range service "pressr_pressr"}}
+    server {{.Node}} {{.Address}}:{{.Port}} check{{end}}

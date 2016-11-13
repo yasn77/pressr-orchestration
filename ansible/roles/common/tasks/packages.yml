@@ -1,0 +1,7 @@
+---
+- apt:
+    cache_valid_time: 3600
+    update_cache: yes
+    name: "{{ item.key }}"
+    state: "{{ item.value }}"
+  with_dict: "{{ base_packages }}"

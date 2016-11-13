@@ -1,0 +1,6 @@
+---
+# vars file for docker
+docker_repo: deb https://apt.dockerproject.org/repo ubuntu-xenial main
+docker_repo_key_id: 58118E89F3A912897C070ADBF76221572C52609D
+docker_pkg: docker-engine
+docker_regsitry_user: yasn77

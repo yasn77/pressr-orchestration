@@ -1,0 +1,8 @@
+deployment_zones:
+  - tag_deploy_zone_primary
+  - tag_deploy_zone_secondary
+pressr_mysql_user: pressr
+pressr_mysql_password: "{{ lookup('env','TF_VAR_db_password') }}"
+pressr_mysql_db: pressr_db
+pressr_mysql_host: "{{ ec2_tag_rds_mysql | default('mysql') }}"
+deployment_group_tag: "tag_env_{{ deployment_environment }}"
