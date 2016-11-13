@@ -108,7 +108,7 @@ APP=$1
 DEPLOY_ENV=$2
 NUM_SERVERS=$3
 INSTANCE_SIZE=$4
-#launch_terraform $DEPLOY_ENV $NUM_SERVERS $INSTANCE_SIZE
+launch_terraform $DEPLOY_ENV $NUM_SERVERS $INSTANCE_SIZE
 run_ansible $APP $DEPLOY_ENV
 
 echo "All done, you should be able to browse to:"
