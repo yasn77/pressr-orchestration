@@ -1,2 +1,4 @@
 aws_secrets.tfvars
 .direnv/
+.terraform/
+.secrets
