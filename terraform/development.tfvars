@@ -1,0 +1,6 @@
+environment = "development"
+resource_prefix = "yasser_nabi_development_pressr"
+cidr_block = "10.10.0.0/16"
+primary_subnet = "10.10.19.0/24"
+secondary_subnet = "10.10.29.0/24"
+db_name = "development_pressr_db"
