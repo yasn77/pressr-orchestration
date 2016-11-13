@@ -8,4 +8,4 @@ variable "cidr_block" { default = "172.16.0.0/16" }
 variable "primary_subnet" { default = "172.16.19.0/24" }
 variable "secondary_subnet" { default = "172.16.29.0/24" }
 variable "db_username" { default = "pressr" }
-variable "db_password" { default = "_pressr_" }
+variable "db_password" {}
