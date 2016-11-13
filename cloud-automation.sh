@@ -85,12 +85,13 @@ run_ansible() {
   CHECK_COUNT=0
   cd ansible
   set +e
-  while [[ $CHECK_COUNT -lt 20 && $ALL_OK -ne 0 ]]
+  while [[ $CHECK_COUNT -lt 50 && $ALL_OK -ne 0 ]]
   do
     echo "Checking hosts have been provisioned..."
     ansible tag_env_${DEPLOY_ENV} --private-key $TF_VAR_sshpubkey_file  -i hosts/ec2.py -u ubuntu -m ping
     ALL_OK=$?
     ((CHECK_COUNT=CHECK_COUNT+1))
+    sleep 5
   done
   if [[ $ALL_OK -ne 0 ]]
   then
