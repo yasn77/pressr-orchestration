@@ -1,0 +1,6 @@
+environment = "production"
+resource_prefix = "yasser_nabi_production_pressr"
+cidr_block = "10.100.0.0/16"
+primary_subnet = "10.100.19.0/24"
+secondary_subnet = "10.100.29.0/24"
+db_name = "production_pressr_db"
