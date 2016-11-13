@@ -66,14 +66,14 @@ launch_terraform() {
   terraform plan \
     -var-file=${DEPLOY_ENV}.tfvars \
     -state=${DEPLOY_ENV}/terraform.tfstate \
-    -var='instance_type=${INSTANCE_SIZE}' \
-    -var='app_instance_count="${NUM_SERVERS}"' \
+    -var='instance_type="'${INSTANCE_SIZE}'"' \
+    -var='app_instance_count="'${NUM_SERVERS}'"' \
     ${DEPLOY_ENV} &&
   terraform apply \
     -var-file=${DEPLOY_ENV}.tfvars \
     -state=${DEPLOY_ENV}/terraform.tfstate \
-    -var='instance_type=${INSTANCE_SIZE}' \
-    -var='app_instance_count="${NUM_SERVERS}"' \
+    -var='instance_type="'${INSTANCE_SIZE}'"' \
+    -var='app_instance_count="'${NUM_SERVERS}'"' \
     ${DEPLOY_ENV}
   cd - 1>/dev/null
 }
